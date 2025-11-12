@@ -1,0 +1,106 @@
+version: 2
+
+models:
+  - name: stg_ga4_events
+    description: "Staging model that flattens and cleans GA4 event data from BigQuery public dataset"
+    columns:
+      - name: event_id
+        description: "Unique identifier for each event (user_pseudo_id + event_name + timestamp)"
+        tests:
+          - unique
+          - not_null
+      
+      - name: user_pseudo_id
+        description: "GA4 anonymous user identifier (cookie-based)"
+        tests:
+          - not_null
+      
+      - name: event_name
+        description: "Type of event (e.g., page_view, purchase, session_start)"
+        tests:
+          - not_null
+      
+      - name: event_datetime
+        description: "Event timestamp converted to TIMESTAMP type"
+        tests:
+          - not_null
+      
+      - name: channel
+        description: "Marketing channel derived from traffic source and medium"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Direct', 'Paid Search', 'Organic Search', 'Paid Social', 'Organic Social', 'Email', 'Referral', 'Affiliate', 'Other']
+      
+      - name: session_id
+        description: "Unique session identifier (user_pseudo_id + ga_session_id)"
+        tests:
+          - not_null
+      
+      - name: is_conversion_event
+        description: "Flag indicating if event is a conversion (purchase, begin_checkout, add_to_cart)"
+        tests:
+          - not_null
+
+  - name: stg_ga4_sessions
+    description: "Aggregated session-level data with traffic source attribution"
+    columns:
+      - name: session_id
+        description: "Unique session identifier"
+        tests:
+          - unique
+          - not_null
+      
+      - name: user_pseudo_id
+        description: "User identifier for this session"
+        tests:
+          - not_null
+      
+      - name: session_date
+        description: "Date of session start"
+        tests:
+          - not_null
+      
+      - name: session_channel
+        description: "Channel that initiated this session (first touchpoint)"
+        tests:
+          - not_null
+      
+      - name: session_duration_seconds
+        description: "Total session duration in seconds"
+        tests:
+          - not_null
+
+  - name: stg_ga4_conversions
+    description: "Filtered conversion events ready for attribution analysis"
+    columns:
+      - name: conversion_id
+        description: "Unique identifier for each conversion"
+        tests:
+          - unique
+          - not_null
+      
+      - name: user_pseudo_id
+        description: "User who converted"
+        tests:
+          - not_null
+      
+      - name: conversion_event
+        description: "Type of conversion event"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['purchase', 'begin_checkout', 'add_to_cart']
+      
+      - name: conversion_value
+        description: "Revenue or value associated with conversion"
+      
+      - name: attribution_window_start
+        description: "Start of 14-day attribution lookback window"
+        tests:
+          - not_null
+      
+      - name: attribution_window_end
+        description: "End of attribution window (conversion timestamp)"
+        tests:
+          - not_null

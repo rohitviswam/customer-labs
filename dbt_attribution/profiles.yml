@@ -1,0 +1,40 @@
+# This file should be configured with your BigQuery credentials
+# Copy this file to ~/.dbt/profiles.yml and update with your project details
+
+attribution_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: [YOUR_GCP_PROJECT_ID]  # e.g., my-project-12345
+      dataset: attribution_dev
+      threads: 4
+      timeout_seconds: 300
+      location: US  # or EU, depending on your data location
+      priority: interactive
+      keyfile: [PATH_TO_SERVICE_ACCOUNT_JSON]  # e.g., /path/to/credentials.json
+      
+      # Optional: Use these if you want to use oauth instead
+      # method: oauth
+      # token: [YOUR_OAUTH_TOKEN]
+      
+    prod:
+      type: bigquery
+      method: service-account
+      project: [YOUR_GCP_PROJECT_ID]
+      dataset: attribution_prod
+      threads: 8
+      timeout_seconds: 300
+      location: US
+      priority: interactive
+      keyfile: [PATH_TO_SERVICE_ACCOUNT_JSON]
+      
+# Instructions:
+# 1. Create a GCP project and enable BigQuery API
+# 2. Create a service account with BigQuery Data Editor and Job User roles
+# 3. Download the service account JSON key
+# 4. Update [YOUR_GCP_PROJECT_ID] with your project ID
+# 5. Update [PATH_TO_SERVICE_ACCOUNT_JSON] with the path to your key file
+# 6. Copy this file to ~/.dbt/profiles.yml
+# 7. Run `dbt debug` to test the connection

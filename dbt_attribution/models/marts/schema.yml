@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: mart_first_click_attribution
+    description: "First-click attribution model - credits first touchpoint with 100% of conversion value"
+    columns:
+      - name: conversion_id
+        description: "Unique conversion identifier"
+        tests:
+          - unique
+          - not_null
+      
+      - name: attributed_channel
+        description: "Channel receiving attribution credit (first touchpoint)"
+        tests:
+          - not_null
+      
+      - name: conversion_value
+        description: "Value attributed to this channel"
+        tests:
+          - not_null
+      
+      - name: attribution_model
+        description: "Attribution model name"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['First-Click']
+
+  - name: mart_last_click_attribution
+    description: "Last-click attribution model - credits last touchpoint with 100% of conversion value"
+    columns:
+      - name: conversion_id
+        description: "Unique conversion identifier"
+        tests:
+          - unique
+          - not_null
+      
+      - name: attributed_channel
+        description: "Channel receiving attribution credit (last touchpoint)"
+        tests:
+          - not_null
+      
+      - name: conversion_value
+        description: "Value attributed to this channel"
+        tests:
+          - not_null
+      
+      - name: attribution_model
+        description: "Attribution model name"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Last-Click']
+
+  - name: mart_attribution_comparison
+    description: "Side-by-side comparison of first-click vs last-click attribution"
+    columns:
+      - name: channel
+        description: "Marketing channel"
+        tests:
+          - not_null
+      
+      - name: conversion_date
+        description: "Date of conversions"
+        tests:
+          - not_null
+      
+      - name: first_click_conversions
+        description: "Number of conversions attributed via first-click"
+        tests:
+          - not_null
+      
+      - name: last_click_conversions
+        description: "Number of conversions attributed via last-click"
+        tests:
+          - not_null
+      
+      - name: conversion_shift
+        description: "Difference between last-click and first-click conversions"
+      
+      - name: revenue_shift
+        description: "Difference between last-click and first-click revenue"

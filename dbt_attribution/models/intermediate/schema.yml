@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: int_touchpoints
+    description: "Deduplicated user touchpoints (one per user-channel-day)"
+    columns:
+      - name: touchpoint_id
+        description: "Unique touchpoint identifier"
+        tests:
+          - unique
+          - not_null
+      
+      - name: user_pseudo_id
+        description: "User identifier"
+        tests:
+          - not_null
+      
+      - name: touchpoint_date
+        description: "Date of touchpoint"
+        tests:
+          - not_null
+      
+      - name: channel
+        description: "Marketing channel for this touchpoint"
+        tests:
+          - not_null
+
+  - name: int_user_journeys
+    description: "User journey with all touchpoints leading to conversions within attribution window"
+    columns:
+      - name: journey_id
+        description: "Unique identifier for conversion-touchpoint pair"
+        tests:
+          - unique
+          - not_null
+      
+      - name: conversion_id
+        description: "Conversion being attributed"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_ga4_conversions')
+              field: conversion_id
+      
+      - name: touchpoint_id
+        description: "Touchpoint in the journey"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('int_touchpoints')
+              field: touchpoint_id
+      
+      - name: touchpoint_position
+        description: "Position of touchpoint in journey (1 = first, N = last)"
+        tests:
+          - not_null
+      
+      - name: is_first_touchpoint
+        description: "Flag for first touchpoint in journey"
+        tests:
+          - not_null
+      
+      - name: is_last_touchpoint
+        description: "Flag for last touchpoint in journey"
+        tests:
+          - not_null
+      
+      - name: days_to_conversion
+        description: "Days from this touchpoint to conversion"
+        tests:
+          - not_null

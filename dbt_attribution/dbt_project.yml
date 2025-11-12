@@ -1,0 +1,108 @@
+# Attribution Pipeline dbt Project
+
+# Project Configuration
+name: 'attribution_pipeline'
+version: '1.0.0'
+config-version: 2
+
+# Profile Configuration
+profile: 'attribution_pipeline'
+
+# Model Paths
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+# Clean Paths
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+# Model Configurations
+models:
+  attribution_pipeline:
+    # Staging models - views for low cost and freshness
+    staging:
+      +materialized: view
+      +schema: staging
+      +tags: ["staging"]
+      
+    # Intermediate models - incremental for performance
+    intermediate:
+      +materialized: incremental
+      +schema: intermediate
+      +tags: ["intermediate"]
+      +on_schema_change: "append_new_columns"
+      +partition_by:
+        field: event_date
+        data_type: date
+      +cluster_by: ["user_pseudo_id", "event_name"]
+      
+    # Mart models - tables for dashboard performance
+    marts:
+      +materialized: table
+      +schema: marts
+      +tags: ["marts"]
+      +partition_by:
+        field: conversion_date
+        data_type: date
+      +cluster_by: ["channel", "attribution_model"]
+
+# Seed Configurations
+seeds:
+  attribution_pipeline:
+    +schema: seeds
+    +quote_columns: false
+
+# Snapshot Configurations
+snapshots:
+  attribution_pipeline:
+    +target_schema: snapshots
+    +strategy: timestamp
+    +updated_at: updated_at
+
+# Test Configurations
+tests:
+  attribution_pipeline:
+    +store_failures: true
+    +schema: test_failures
+
+# Documentation
+docs:
+  attribution_pipeline:
+    node_colors:
+      staging: "#90EE90"
+      intermediate: "#FFD700"
+      marts: "#87CEEB"
+
+# Vars - Configuration variables
+vars:
+  # Attribution configuration
+  attribution_lookback_days: 14
+  session_timeout_minutes: 30
+  conversion_events: ['purchase', 'begin_checkout']
+  primary_conversion_event: 'purchase'
+  
+  # Date range for incremental loads
+  start_date: '2020-11-01'
+  
+  # BigQuery specific
+  dataset_project: 'bigquery-public-data'
+  dataset_name: 'ga4_obfuscated_sample_ecommerce'
+  
+# Quoting
+quoting:
+  database: false
+  schema: false
+  identifier: false
+
+# On-run-start and on-run-end hooks
+on-run-start:
+  - "{{ log('Starting dbt run for attribution pipeline...', info=True) }}"
+
+on-run-end:
+  - "{{ log('dbt run completed successfully!', info=True) }}"
