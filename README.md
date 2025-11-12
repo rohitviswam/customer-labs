@@ -4,12 +4,14 @@
 **Role**: Data Engineer  
 **Timeline**: 72 hours
 
+> **⚠️ BigQuery Free Tier Note**: This implementation uses BigQuery views instead of tables/incremental models due to free tier limitations (no DML operations). The streaming pipeline is documented but requires a billing-enabled project to run. All attribution logic and dbt models are fully functional using the GA4 public dataset.
+
 ## Project Overview
 
 This project implements a near-real-time marketing attribution pipeline using:
 - **BigQuery**: Data warehouse with GA4 public dataset
 - **dbt**: Data transformation and modeling
-- **Streaming Pipeline**: Python-based event ingestion
+- **Streaming Pipeline**: Python-based event ingestion (requires billing-enabled project)
 - **Dashboard**: Real-time visualization of attribution metrics
 
 ## Architecture
@@ -96,10 +98,6 @@ GA4 Events (BigQuery) → dbt Staging → dbt Intermediate → Attribution Marts
    cd dbt_attribution
    pip install -r requirements.txt
    
-   # Streaming pipeline
-   cd ../streaming
-   pip install -r requirements.txt
-   
    # Dashboard
    cd ../dashboard
    pip install -r requirements.txt
@@ -115,22 +113,18 @@ GA4 Events (BigQuery) → dbt Staging → dbt Intermediate → Attribution Marts
 5. **Run dbt models**
    ```bash
    dbt deps
-   dbt seed
    dbt run
    dbt test
    ```
 
-6. **Run streaming pipeline**
-   ```bash
-   cd ../streaming
-   python stream_events.py
-   ```
-
-7. **Launch dashboard**
+6. **Launch dashboard**
    ```bash
    cd ../dashboard
-   python app.py
+   export GOOGLE_APPLICATION_CREDENTIALS="path/to/credentials.json"
+   streamlit run app.py
    ```
+
+> **Note on Streaming Pipeline**: The streaming script (`streaming/stream_events.py`) requires BigQuery's streaming insert API, which is not available in the free tier. The dashboard and attribution models work perfectly with the existing GA4 public dataset without needing the streaming component.
 
 ## Dataset Information
 
