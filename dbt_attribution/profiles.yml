@@ -1,5 +1,4 @@
-# This file should be configured with your BigQuery credentials
-# Copy this file to ~/.dbt/profiles.yml and update with your project details
+# BigQuery credentials configuration
 
 attribution_pipeline:
   target: dev
@@ -7,13 +6,13 @@ attribution_pipeline:
     dev:
       type: bigquery
       method: service-account
-      project: [YOUR_GCP_PROJECT_ID]  # e.g., my-project-12345
+      project: customer-labs-478003
       dataset: attribution_dev
       threads: 4
       timeout_seconds: 300
-      location: US  # or EU, depending on your data location
+      location: US
       priority: interactive
-      keyfile: [PATH_TO_SERVICE_ACCOUNT_JSON]  # e.g., /path/to/credentials.json
+      keyfile: /Users/rohitviswam/.gcp/service-account-key.json
       
       # Optional: Use these if you want to use oauth instead
       # method: oauth

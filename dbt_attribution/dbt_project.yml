@@ -71,14 +71,6 @@ tests:
     +store_failures: true
     +schema: test_failures
 
-# Documentation
-docs:
-  attribution_pipeline:
-    node_colors:
-      staging: "#90EE90"
-      intermediate: "#FFD700"
-      marts: "#87CEEB"
-
 # Vars - Configuration variables
 vars:
   # Attribution configuration
