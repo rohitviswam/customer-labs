@@ -157,4 +157,4 @@ For questions or issues:
 - Check dbt logs in `dbt_attribution/logs/`
 - Review BigQuery job history in GCP Console
 
-Good luck! 🚀
+Good luck!

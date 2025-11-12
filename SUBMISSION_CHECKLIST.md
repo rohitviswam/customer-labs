@@ -4,14 +4,14 @@ Use this checklist before submitting your project to ensure all requirements are
 
 ## Required Deliverables
 
-### 1. Architecture Documentation ✅
+### 1. Architecture Documentation [Complete]
 - [x] 1-page architecture document created (`docs/architecture.md`)
 - [x] System diagram with data flow
 - [x] All tools and technologies listed
 - [x] Dataset and table names specified
 - [x] Streaming pipeline design documented
 
-### 2. dbt Project ✅
+### 2. dbt Project [Complete]
 - [x] dbt project initialized (`dbt_attribution/`)
 - [x] `dbt_project.yml` configured
 - [x] `profiles.yml` template provided
@@ -30,7 +30,7 @@ Use this checklist before submitting your project to ensure all requirements are
 - [x] dbt tests configured
 - [x] Attribution assumptions documented
 
-### 3. Streaming Demo ✅
+### 3. Streaming Demo [Complete]
 - [x] Streaming script created (`streaming/stream_events.py`)
 - [x] Generates 5-20 sample events
 - [x] Streams to BigQuery
@@ -39,7 +39,7 @@ Use this checklist before submitting your project to ensure all requirements are
 - [x] Latency tracking included
 - [x] Requirements.txt provided
 
-### 4. Real-time Dashboard ✅
+### 4. Real-time Dashboard [Complete]
 - [x] Dashboard application created (`dashboard/app.py`)
 - [x] First vs Last attribution totals displayed
 - [x] 14-day time series chart
@@ -48,7 +48,7 @@ Use this checklist before submitting your project to ensure all requirements are
 - [x] Auto-refresh capability
 - [x] Requirements.txt provided
 
-### 5. Documentation ✅
+### 5. Documentation [Complete]
 - [x] README.md with project overview
 - [x] SETUP.md with installation instructions
 - [x] Runbook with operational procedures (`docs/runbook.md`)
@@ -58,7 +58,7 @@ Use this checklist before submitting your project to ensure all requirements are
 - [x] Monitoring suggestions included
 - [x] Cost estimates provided
 
-### 6. Anti-AI & Authenticity Checks ⚠️
+### 6. Anti-AI & Authenticity Checks [In Progress]
 - [x] Git repository initialized
 - [x] Incremental commits (need more throughout development)
 - [x] worklog.md created with entries
@@ -68,7 +68,7 @@ Use this checklist before submitting your project to ensure all requirements are
 - [ ] Ready for live 10-15 min walkthrough
 - [ ] Ready for 15-min live SQL edit
 
-### 7. Demo Video/Recording ⏳
+### 7. Demo Video/Recording [Pending]
 - [ ] 5-8 minute screencast recorded
   - [ ] Show architecture
   - [ ] Run dbt models
@@ -144,37 +144,37 @@ Hi CustomerLabs Team,
 
 Please find my submission for the Real-time Attribution Dashboard assessment:
 
-📦 Deliverables:
+Deliverables:
 - Repository: [GitHub/GitLab URL]
 - Dashboard: [Live URL or Demo Video Link]
 - Documentation: See README.md in repository
 
-📋 Project Summary:
+Project Summary:
 - Dataset: bigquery-public-data.ga4_obfuscated_sample_ecommerce
 - Tools: BigQuery, dbt, Python, Streamlit
 - Attribution Models: First-Click & Last-Click
 - Lookback Window: 14 days
 - Streaming: Real-time event ingestion with deduplication
 
-📄 Key Documents:
+Key Documents:
 - Architecture: docs/architecture.md
 - Runbook: docs/runbook.md
 - Assumptions: docs/assumptions.md
 - Worklog: worklog.md
 - Sketches: sketches/ directory
 
-⚡ Quick Start:
+Quick Start:
 1. Configure BigQuery credentials
 2. Run: dbt run
 3. Stream events: python streaming/stream_events.py
 4. Launch dashboard: streamlit run dashboard/app.py
 
-🎯 Highlights:
+Highlights:
 - [Your key achievement 1]
 - [Your key achievement 2]
 - [Your key achievement 3]
 
-⏱️ Time Investment:
+Time Investment:
 - Approximately [X] hours over 72-hour window
 - Detailed breakdown in worklog.md
 
@@ -222,4 +222,4 @@ Rate yourself on each criterion (0-10):
 **Submitted By**: _____________  
 **Time Spent**: _______ hours
 
-Good luck! 🚀
+Good luck!

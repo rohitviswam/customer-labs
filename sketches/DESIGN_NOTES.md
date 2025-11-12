@@ -99,8 +99,9 @@ stg_ga4_events ────┬──→ stg_ga4_sessions
 
 Layout sketched (4 sections):
 
+```
 ┌─────────────────────────────────────────┐
-│  📊 ATTRIBUTION DASHBOARD               │
+│  ATTRIBUTION DASHBOARD                   │
 ├─────────────────────────────────────────┤
 │                                          │
 │  [Metric] [Metric] [Metric] [Metric]    │
@@ -108,19 +109,20 @@ Layout sketched (4 sections):
 │                                          │
 ├─────────────────────────────────────────┤
 │                                          │
-│  📈 14-DAY TREND                        │
+│  14-DAY TREND                            │
 │  [Line chart: First vs Last over time]  │
 │                                          │
 ├──────────────┬──────────────────────────┤
 │              │                          │
-│  🥧 FIRST    │  🥧 LAST                │
+│  FIRST       │  LAST                    │
 │  [Pie chart] │  [Pie chart]            │
 │              │                          │
 ├──────────────┴──────────────────────────┤
-│  🔴 LIVE EVENTS                         │
+│  LIVE EVENTS                             │
 │  [Table: Recent streamed events]        │
 │                                          │
 └─────────────────────────────────────────┘
+```
 ```
 
 **Features:**
@@ -218,22 +220,22 @@ dbt incremental refresh picks up new events
 ## Implementation Notes
 
 ### Day 1 Focus
-- ✓ Architecture documentation
-- ✓ dbt project structure
-- ✓ Staging models with flattening logic
-- ✓ Schema tests
+- [x] Architecture documentation
+- [x] dbt project structure
+- [x] Staging models with flattening logic
+- [x] Schema tests
 
 ### Day 2 Focus
-- ✓ Intermediate models (touchpoints, journeys)
-- ✓ Attribution mart models
-- ✓ Streaming pipeline script
-- ✓ Deduplication logic
+- [x] Intermediate models (touchpoints, journeys)
+- [x] Attribution mart models
+- [x] Streaming pipeline script
+- [x] Deduplication logic
 
 ### Day 3 Focus
-- ✓ Dashboard implementation
-- ✓ Runbook and documentation
-- ✓ Testing and validation
-- ⏳ Demo video recording
+- [x] Dashboard implementation
+- [x] Runbook and documentation
+- [x] Testing and validation
+- [ ] Demo video recording
 
 ---
 

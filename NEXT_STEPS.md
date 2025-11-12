@@ -2,15 +2,15 @@
 
 This document provides a day-by-day plan to complete the attribution dashboard project.
 
-## Current Status ✅
+## Current Status [Complete]
 
 You now have:
-- ✅ Complete project structure
-- ✅ All dbt models (staging, intermediate, marts)
-- ✅ Streaming pipeline script
-- ✅ Dashboard application
-- ✅ Comprehensive documentation
-- ✅ Git repository initialized with 2 commits
+- [x] Complete project structure
+- [x] All dbt models (staging, intermediate, marts)
+- [x] Streaming pipeline script
+- [x] Dashboard application
+- [x] Comprehensive documentation
+- [x] Git repository initialized with 2 commits
 
 ## What You Need to Do
 
@@ -296,10 +296,6 @@ cd ..
 zip -r attribution-dashboard.zip "customer labs" -x "*.git*" "*/target/*" "*/dbt_packages/*"
 ```
 
-#### 6. Submit! 🚀
-
-Use the email template from `SUBMISSION_CHECKLIST.md`.
-
 **Include:**
 - Repository URL or ZIP file
 - Dashboard link or demo video
@@ -370,26 +366,26 @@ GROUP BY channel
 
 ## Common Pitfalls to Avoid
 
-1. ❌ Forgetting to commit regularly
-   ✅ Commit every major change
+1. Not committing regularly
+   - Solution: Commit every major change
 
-2. ❌ Not testing on fresh environment
-   ✅ Have someone else try your setup instructions
+2. Not testing on fresh environment
+   - Solution: Have someone else try your setup instructions
 
-3. ❌ Incomplete worklog
-   ✅ Write entries as you work, not retroactively
+3. Incomplete worklog
+   - Solution: Write entries as you work, not retroactively
 
-4. ❌ Missing hand-drawn sketches
-   ✅ Actually draw and photograph them
+4. Missing hand-drawn sketches
+   - Solution: Actually draw and photograph them
 
-5. ❌ Not handling edge cases
-   ✅ Document assumptions and limitations
+5. Not handling edge cases
+   - Solution: Document assumptions and limitations
 
-6. ❌ Dashboard doesn't work without data
-   ✅ Add graceful error handling
+6. Dashboard doesn't work without data
+   - Solution: Add graceful error handling
 
-7. ❌ Submitting with credentials in repo
-   ✅ Use .gitignore and check before pushing
+7. Submitting with credentials in repo
+   - Solution: Use .gitignore and check before pushing
 
 ## Support Resources
 
@@ -405,17 +401,9 @@ If you have clarifying questions (up to 5 in first 24 hours):
 - Check if edge case is already documented
 - Email: jobs@customerlabs.co
 
-## You've Got This! 💪
-
-You have all the code and documentation you need. Now just:
-1. Configure with your credentials
-2. Test everything works
-3. Create your sketches
-4. Record demo
-5. Submit
-
-The hard part (designing and coding) is done. You're set up for success!
+- Review SQL for live editing session
+- Be ready to explain design decisions
 
 ---
 
-**Good luck!** 🎉
+**Good luck!**

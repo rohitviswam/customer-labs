@@ -106,10 +106,10 @@ class EventStreamer:
         
         try:
             table = self.client.create_table(table)
-            print(f"✓ Created table {self.full_table_id}")
+            print(f"Created table {self.full_table_id}")
         except Exception as e:
             if "Already Exists" in str(e):
-                print(f"✓ Table {self.full_table_id} already exists")
+                print(f"Table {self.full_table_id} already exists")
             else:
                 raise
     
@@ -203,10 +203,10 @@ class EventStreamer:
         latency = time.time() - start_time
         
         if errors:
-            print(f"✗ Errors inserting rows: {errors}")
+            print(f"Errors inserting rows: {errors}")
             return {"success": False, "errors": errors, "latency_seconds": latency}
         else:
-            print(f"✓ Successfully streamed {len(events)} events (latency: {latency:.2f}s)")
+            print(f"Successfully streamed {len(events)} events (latency: {latency:.2f}s)")
             return {"success": True, "rows_inserted": len(events), "latency_seconds": latency}
     
     def verify_deduplication(self, event_id: str) -> bool:
@@ -261,11 +261,11 @@ def main():
     streamer = EventStreamer(args.project, args.dataset, args.table)
     
     # Ensure table exists
-    print("📋 Setting up BigQuery table...")
+    print("Setting up BigQuery table...")
     streamer.ensure_table_exists()
     
     # Generate and stream events
-    print(f"\n📊 Generating {args.num_users} user journeys...")
+    print(f"\nGenerating {args.num_users} user journeys...")
     all_events = []
     
     for i in range(args.num_users):
@@ -274,18 +274,18 @@ def main():
         all_events.extend(events)
         print(f"  → User {i+1}: {user_id} - {len(events)} events")
     
-    print(f"\n🚀 Streaming {len(all_events)} events to BigQuery...")
+    print(f"\nStreaming {len(all_events)} events to BigQuery...")
     result = streamer.stream_events(all_events)
     
     if result["success"]:
-        print(f"\n✅ Stream completed successfully!")
+        print(f"\nStream completed successfully!")
         print(f"   • Events inserted: {result['rows_inserted']}")
         print(f"   • Latency: {result['latency_seconds']:.2f} seconds")
         print(f"   • Avg latency per event: {result['latency_seconds']/len(all_events):.3f}s")
     
     # Test deduplication if requested
     if args.test_dedup and all_events:
-        print(f"\n🔄 Testing deduplication...")
+        print(f"\nTesting deduplication...")
         test_event = all_events[0]
         print(f"   • Re-streaming first event: {test_event['event_id']}")
         
@@ -294,19 +294,19 @@ def main():
         
         is_unique = streamer.verify_deduplication(test_event['event_id'])
         if is_unique:
-            print(f"   ✓ Deduplication working: Only 1 copy of event exists")
+            print(f"   Deduplication working: Only 1 copy of event exists")
         else:
-            print(f"   ✗ Deduplication failed: Multiple copies found")
+            print(f"   Deduplication failed: Multiple copies found")
     
     # Show recent events
-    print(f"\n📋 Recent streamed events (last 10):")
+    print(f"\nRecent streamed events (last 10):")
     print(f"{'='*80}")
     recent = streamer.get_recent_events(limit=10)
     for event in recent:
         print(f"   {event['event_time']} | {event['event_name']:20s} | {event['source']:15s} | {event['user_pseudo_id']}")
     
     print(f"\n{'='*60}")
-    print("✅ Streaming demo completed successfully!")
+    print("Streaming demo completed successfully!")
     print(f"{'='*60}\n")
     
     print("Next steps:")

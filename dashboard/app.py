@@ -22,7 +22,7 @@ import time
 # Page configuration
 st.set_page_config(
     page_title="Attribution Dashboard",
-    page_icon="📊",
+    page_icon="chart",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -172,7 +172,7 @@ def load_live_events(_client, project_id, dataset_id, limit=20):
 # Main dashboard
 def main():
     # Sidebar configuration
-    st.sidebar.title("⚙️ Configuration")
+    st.sidebar.title("Configuration")
     
     project_id = st.sidebar.text_input(
         "GCP Project ID",
@@ -192,14 +192,14 @@ def main():
         st.sidebar.info("Dashboard will refresh every 10 seconds")
     
     # Header
-    st.markdown('<div class="main-header">📊 Real-time Attribution Dashboard</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-header">Real-time Attribution Dashboard</div>', unsafe_allow_html=True)
     st.markdown(f"**Last Updated**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Initialize client
     try:
         client = get_bigquery_client()
     except Exception as e:
-        st.error(f"❌ Failed to initialize BigQuery client: {str(e)}")
+        st.error(f"Failed to initialize BigQuery client: {str(e)}")
         st.info("Please ensure Google Cloud credentials are configured correctly.")
         return
     
@@ -211,7 +211,7 @@ def main():
             channel_df = load_channel_breakdown(client, project_id, dataset_id)
             live_events_df = load_live_events(client, project_id, dataset_id)
     except Exception as e:
-        st.error(f"❌ Error loading data: {str(e)}")
+        st.error(f"Error loading data: {str(e)}")
         st.info("Make sure you've run `dbt run` and the dataset/tables exist.")
         return
     
@@ -385,17 +385,17 @@ def main():
     st.markdown("---")
     
     # Section 4: Live Event Feed
-    st.header("4. 🔴 Live Event Feed")
+    st.header("4. Live Event Feed")
     
     if not live_events_df.empty:
         # Status indicator
         most_recent_seconds = live_events_df['seconds_ago'].min()
         if most_recent_seconds < 60:
-            st.success(f"✅ Live - Last event received {int(most_recent_seconds)} seconds ago")
+            st.success(f"Live - Last event received {int(most_recent_seconds)} seconds ago")
         elif most_recent_seconds < 300:
-            st.warning(f"⚠️ Recent - Last event received {int(most_recent_seconds)} seconds ago")
+            st.warning(f"Recent - Last event received {int(most_recent_seconds)} seconds ago")
         else:
-            st.error(f"❌ Stale - Last event received {int(most_recent_seconds)} seconds ago")
+            st.error(f"Stale - Last event received {int(most_recent_seconds)} seconds ago")
         
         # Format for display
         display_events = live_events_df[['event_time', 'event_name', 'source', 'medium', 'user_pseudo_id', 'seconds_ago']].copy()
