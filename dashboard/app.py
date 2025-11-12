@@ -66,7 +66,6 @@ def load_attribution_summary(_client, project_id, dataset_id):
             SUM(conversion_value) as revenue,
             COUNT(DISTINCT user_pseudo_id) as users
         FROM `{project_id}.{dataset_id}.mart_first_click_attribution`
-        WHERE conversion_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)
     ),
     last_click AS (
         SELECT
@@ -74,7 +73,6 @@ def load_attribution_summary(_client, project_id, dataset_id):
             SUM(conversion_value) as revenue,
             COUNT(DISTINCT user_pseudo_id) as users
         FROM `{project_id}.{dataset_id}.mart_last_click_attribution`
-        WHERE conversion_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)
     )
     SELECT
         'First-Click' as model,
@@ -95,8 +93,12 @@ def load_attribution_summary(_client, project_id, dataset_id):
 
 @st.cache_data(ttl=300)
 def load_time_series(_client, project_id, dataset_id):
-    """Load 14-day time series for both attribution models"""
+    """Load time series for both attribution models (last 14 days of available data)"""
     query = f"""
+    WITH latest_date AS (
+        SELECT MAX(conversion_date) as max_date
+        FROM `{project_id}.{dataset_id}.mart_attribution_comparison`
+    )
     SELECT
         conversion_date,
         channel,
@@ -105,7 +107,7 @@ def load_time_series(_client, project_id, dataset_id):
         first_click_revenue,
         last_click_revenue
     FROM `{project_id}.{dataset_id}.mart_attribution_comparison`
-    WHERE conversion_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)
+    WHERE conversion_date >= (SELECT DATE_SUB(max_date, INTERVAL 14 DAY) FROM latest_date)
     ORDER BY conversion_date
     """
     
@@ -121,7 +123,6 @@ def load_channel_breakdown(_client, project_id, dataset_id):
             COUNT(DISTINCT conversion_id) as conversions,
             SUM(conversion_value) as revenue
         FROM `{project_id}.{dataset_id}.mart_first_click_attribution`
-        WHERE conversion_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)
         GROUP BY channel
     ),
     last_click AS (
@@ -130,7 +131,6 @@ def load_channel_breakdown(_client, project_id, dataset_id):
             COUNT(DISTINCT conversion_id) as conversions,
             SUM(conversion_value) as revenue
         FROM `{project_id}.{dataset_id}.mart_last_click_attribution`
-        WHERE conversion_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)
         GROUP BY channel
     )
     SELECT
@@ -261,8 +261,8 @@ def main():
     
     st.markdown("---")
     
-    # Section 2: 14-Day Time Series
-    st.header("2. 14-Day Attribution Trends")
+    # Section 2: Attribution Trends (Last 14 Days of Available Data)
+    st.header("2. Attribution Trends (Last 14 Days of Available Data)")
     
     if not time_series_df.empty:
         # Aggregate by date
