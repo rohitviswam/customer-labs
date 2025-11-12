@@ -147,20 +147,19 @@ def load_channel_breakdown(_client, project_id, dataset_id):
     return _client.query(query).to_dataframe()
 
 @st.cache_data(ttl=5)  # Cache for only 5 seconds - near real-time
-def load_live_events(_client, project_id, dataset_id, limit=20):
-    """Load recent streamed events"""
+def load_live_events(_client, project_id, staging_dataset_id, limit=20):
+    """Load recent events from staging"""
     query = f"""
     SELECT
         event_id,
         event_name,
         user_pseudo_id,
-        TIMESTAMP_MICROS(event_timestamp) as event_time,
-        traffic_source.source as source,
-        traffic_source.medium as medium,
-        ingestion_timestamp,
-        TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), ingestion_timestamp, SECOND) as seconds_ago
-    FROM `{project_id}.{dataset_id}.events_streaming`
-    ORDER BY ingestion_timestamp DESC
+        event_datetime as event_time,
+        traffic_source as source,
+        traffic_medium as medium,
+        TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), event_datetime, SECOND) as seconds_ago
+    FROM `{project_id}.{staging_dataset_id}.stg_ga4_events`
+    ORDER BY event_datetime DESC
     LIMIT {limit}
     """
     
@@ -181,9 +180,15 @@ def main():
     )
     
     dataset_id = st.sidebar.text_input(
-        "Dataset ID",
-        value="attribution_dev",
-        help="BigQuery dataset containing dbt models"
+        "Dataset ID (Marts)",
+        value="attribution_dev_marts",
+        help="BigQuery dataset containing dbt mart models"
+    )
+    
+    staging_dataset_id = st.sidebar.text_input(
+        "Staging Dataset ID",
+        value="attribution_dev_staging",
+        help="BigQuery dataset containing staging models for live events"
     )
     
     auto_refresh = st.sidebar.checkbox("Auto-refresh (every 10s)", value=False)
@@ -209,7 +214,7 @@ def main():
             summary_df = load_attribution_summary(client, project_id, dataset_id)
             time_series_df = load_time_series(client, project_id, dataset_id)
             channel_df = load_channel_breakdown(client, project_id, dataset_id)
-            live_events_df = load_live_events(client, project_id, dataset_id)
+            live_events_df = load_live_events(client, project_id, staging_dataset_id)
     except Exception as e:
         st.error(f"Error loading data: {str(e)}")
         st.info("Make sure you've run `dbt run` and the dataset/tables exist.")
