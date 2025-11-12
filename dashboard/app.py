@@ -176,7 +176,7 @@ def main():
     
     project_id = st.sidebar.text_input(
         "GCP Project ID",
-        value="your-project-id",
+        value="customer-labs-478003",
         help="Enter your Google Cloud Project ID"
     )
     
