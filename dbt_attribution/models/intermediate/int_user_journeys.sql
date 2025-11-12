@@ -9,32 +9,18 @@
 */
 
 {{ config(
-    materialized='incremental',
-    unique_key='journey_id',
-    partition_by={
-        'field': 'conversion_date',
-        'data_type': 'date'
-    },
-    cluster_by=['user_pseudo_id', 'channel'],
+    materialized='view',
     tags=['intermediate', 'attribution']
 ) }}
 
 with conversions as (
     select *
     from {{ ref('stg_ga4_conversions') }}
-    
-    {% if is_incremental() %}
-        where conversion_date >= date_sub(current_date(), interval 30 day)
-    {% endif %}
 ),
 
 touchpoints as (
     select *
     from {{ ref('int_touchpoints') }}
-    
-    {% if is_incremental() %}
-        where touchpoint_date >= date_sub(current_date(), interval 45 day)  -- Extra buffer for lookback
-    {% endif %}
 ),
 
 -- Join conversions with touchpoints in attribution window

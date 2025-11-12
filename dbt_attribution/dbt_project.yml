@@ -88,7 +88,7 @@ vars:
   
 # Quoting
 quoting:
-  database: false
+  database: true
   schema: false
   identifier: false
 

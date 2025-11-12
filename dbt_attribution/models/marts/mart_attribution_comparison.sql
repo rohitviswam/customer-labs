@@ -9,7 +9,7 @@
 */
 
 {{ config(
-    materialized='table',
+    materialized='view',
     tags=['marts', 'attribution', 'comparison']
 ) }}
 

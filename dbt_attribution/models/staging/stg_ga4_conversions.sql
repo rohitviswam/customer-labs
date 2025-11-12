@@ -30,7 +30,7 @@ conversions as (
         ) as conversion_id,
         
         event_id,
-        event_date as conversion_date,
+        parse_date('%Y%m%d', event_date) as conversion_date,
         event_datetime as conversion_datetime,
         event_timestamp as conversion_timestamp,
         event_name as conversion_event,

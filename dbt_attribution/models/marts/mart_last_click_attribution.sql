@@ -9,12 +9,7 @@
 */
 
 {{ config(
-    materialized='table',
-    partition_by={
-        'field': 'conversion_date',
-        'data_type': 'date'
-    },
-    cluster_by=['channel'],
+    materialized='view',
     tags=['marts', 'attribution']
 ) }}
 
@@ -75,7 +70,7 @@ direct_conversions as (
         c.conversion_channel as attributed_channel,
         c.conversion_traffic_source as attributed_source,
         'direct' as attributed_medium,
-        null as attributed_campaign,
+        cast(null as string) as attributed_campaign,
         c.conversion_page as attributed_landing_page,
         c.conversion_date as attributed_touchpoint_date,
         c.conversion_datetime as attributed_touchpoint_datetime,

@@ -10,24 +10,13 @@
 */
 
 {{ config(
-    materialized='incremental',
-    unique_key='session_id',
-    partition_by={
-        'field': 'session_date',
-        'data_type': 'date'
-    },
-    cluster_by=['user_pseudo_id', 'channel'],
+    materialized='view',
     tags=['staging', 'ga4']
 ) }}
 
 with events as (
     select *
     from {{ ref('stg_ga4_events') }}
-    
-    {% if is_incremental() %}
-        -- Only process recent data on incremental runs
-        where event_date >= date_sub(current_date(), interval 3 day)
-    {% endif %}
 ),
 
 session_aggregated as (

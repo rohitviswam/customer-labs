@@ -9,23 +9,13 @@
 */
 
 {{ config(
-    materialized='incremental',
-    unique_key='touchpoint_id',
-    partition_by={
-        'field': 'touchpoint_date',
-        'data_type': 'date'
-    },
-    cluster_by=['user_pseudo_id', 'channel'],
+    materialized='view',
     tags=['intermediate', 'attribution']
 ) }}
 
 with events as (
     select *
     from {{ ref('stg_ga4_events') }}
-    
-    {% if is_incremental() %}
-        where event_date >= date_sub(current_date(), interval 30 day)
-    {% endif %}
 ),
 
 -- Deduplicate touchpoints: Keep first occurrence per user-channel-date
@@ -43,7 +33,7 @@ deduplicated_touchpoints as (
         user_id,
         session_id,
         
-        event_date as touchpoint_date,
+        parse_date('%Y%m%d', event_date) as touchpoint_date,
         min(event_datetime) as touchpoint_datetime,
         min(event_timestamp) as touchpoint_timestamp,
         
