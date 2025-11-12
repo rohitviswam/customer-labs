@@ -212,9 +212,8 @@ See [docs/runbook.md](docs/runbook.md) for detailed operational procedures.
 
 ## Contact
 
-For questions or clarifications: [Your Email]
+For questions or clarifications: rohitviswam@gmail.com
 
 ---
 
-**Submission Date**: [Date]  
-**Time Spent**: ~[X] hours over 72-hour window
+**Submission Date**: 12-11-2025  
