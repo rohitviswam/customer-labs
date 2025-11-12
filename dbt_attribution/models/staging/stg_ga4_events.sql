@@ -19,8 +19,8 @@ with source_events as (
     select *
     from `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*`
     where
-        -- Filter to recent data and exclude invalid timestamps
-        _table_suffix >= format_date('%Y%m%d', date_sub(current_date(), interval 90 day))
+        -- GA4 public dataset has data from 2020-2021
+        _table_suffix BETWEEN '20201101' AND '20210131'
         and event_timestamp is not null
         and user_pseudo_id is not null
 ),
